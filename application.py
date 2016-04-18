@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Category, Item
+from database_setup import Base, Category, Item, User
 
 from flask import session as login_session
 import random
@@ -104,6 +104,12 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
+    # check if user exists locally
+    user_id = get_user_id(login_session['email'])
+    if not user_id:
+    	user_id = create_user(login_session)
+    login_session['user_id'] = user_id
+
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
@@ -114,6 +120,26 @@ def gconnect():
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return output
+
+# User Helper Functions
+def create_user(login_session):
+	new_user = User(name=login_session['username'], email=login_session[
+                   'email'], picture=login_session['picture'])
+	session.add(new_user)
+	session.commit()
+	user = session.query(User).filter_by(email=login_session['email']).one()
+	return user.id
+
+def get_user_info(user_id):
+    user = session.query(User).filter_by(id=user_id).one()
+    return user
+
+def get_user_id(email):
+    try:
+    	user = session.query(User).filter_by(email=email).one()
+    	return user.id
+    except:
+    	return None
 
 @app.route('/gdisconnect')
 def gdisconnect():
