@@ -187,7 +187,10 @@ def show_category(category_id):
     return render_template('category.html', items=items, category=category)
 
 # Show a particular item
-@app.route('/catalog/<int:category_id>/')
+@app.route('/catalog/<int:category_id>/<int:item_id>/')
+def show_item(category_id, item_id):
+	item = session.query(Item).filter_by(id=item_id).one()
+	return render_template('item.html', item=item)
 
 # Create a new category
 # @app.route('/catalog/category/new/', methods=['GET', 'POST'])
