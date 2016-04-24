@@ -193,9 +193,48 @@ def show_item(category_id, item_id):
 	return render_template('item.html', item=item)
 
 # Create a new category
-# @app.route('/catalog/category/new/', methods=['GET', 'POST'])
+@app.route('/catalog/category/new/', methods=['GET', 'POST'])
 def new_category():
-	pass
+	if 'username' not in login_session:
+		return redirect('/login')
+	if request.method == 'POST':
+		new_category = Category(name=request.form['name'])
+		session.add(new_category)
+		session.commit()
+		return redirect(url_for('show_catalog'))
+	else:
+		return render_template('new_category.html')
+
+# Edit a category
+@app.route('/catalog/category/<int:category_id>/edit/', methods=['GET', 'POST'])
+def edit_category(category_id):
+	if 'username' not in login_session:
+		return redirect('/login')
+	edited_category = session.query(Category).filter_by(id=category_id).one()
+	if edited_category.user_id != login_session['user_id']:
+		return "<script>function myFunction() {alert('You are not authorized to edit this category.');}</script><body onload='myFunction()''>"
+	if request.method == 'POST':
+		if request.form['name']:
+			edited_category.name = request.form['name']
+			return redirect(url_for('show_catalog'))
+	else:
+		return render_template('edit_category.html', category=edited_category)
+
+# Delete a category
+@app.route('/catalog/category/<int:category_id>/delete/', methods=['GET', 'POST'])
+def delete_category(category_id):
+	if 'username' not in login_session:
+		return redirect('/login')
+	category_to_delete = session.query(Category).filter_by(id=category_id).one()
+	if category_to_delete.user_id != login_session['user_id']:
+		return "<script>function myFunction() {alert('You are not authorized to delete this category.');}</script><body onload='myFunction()''>"
+	if request.method == 'POST':
+		session.delete(category_to_delete)
+		session.commit()
+		return redirect(url_for('show_catalog'))
+	else:
+		return render_template('delete_category.html', category=category_to_delete)
+
 # Create a new item
 @app.route('/catalog/category/<int:category_id>/items/new', methods=['GET', 'POST'])
 def new_item(category_id):
