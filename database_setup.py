@@ -40,7 +40,7 @@ class Item(Base):
 	user = relationship(User)
 
 	@property
-	def seralize(self):
+	def serialize(self):
 	    return {
 	    	'name': self.name,
 	    	'description': self.description,

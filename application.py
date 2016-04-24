@@ -196,6 +196,22 @@ def show_item(category_id, item_id):
 # @app.route('/catalog/category/new/', methods=['GET', 'POST'])
 def new_category():
 	pass
+# JSON endpoints
+@app.route('/catalog/JSON')
+def catalog_JSON():
+	categories = session.query(Category).all()
+	return jsonify(categories=[c.serialize for c in categories])
+
+@app.route('/catalog/category/<int:category_id>/items/JSON')
+def items_JSON(category_id):
+	category = session.query(Category).filter_by(id=category_id).one()
+	items = session.query(Item).filter_by(category_id=category_id).all()
+	return jsonify(items=[i.serialize for i in items])
+
+@app.route('/catalog/category/<int:category_id>/items/<int:item_id>/JSON')
+def item_JSON(category_id, item_id):
+	item = session.query(Item).filter_by(id=item_id).one()
+	return jsonify(item=item.serialize)
 
 if __name__ == '__main__':
 	app.secret_key = 'super_secret_key'
