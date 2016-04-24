@@ -179,15 +179,15 @@ def show_catalog():
 	return render_template('catalog.html', categories=categories)
 
 # Show a category's items
-@app.route('/catalog/<int:category_id>/')
-# @app.route('/catalog/<category_name>/')
+@app.route('/catalog/category/<int:category_id>/')
+@app.route('/catalog/category/<int:category_id>/items/')
 def show_category(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     items = session.query(Item).filter_by(category_id=category_id).all()
     return render_template('category.html', items=items, category=category)
 
 # Show a particular item
-@app.route('/catalog/<int:category_id>/<int:item_id>/')
+@app.route('/catalog/category/<int:category_id>/items/<int:item_id>/')
 def show_item(category_id, item_id):
 	item = session.query(Item).filter_by(id=item_id).one()
 	return render_template('item.html', item=item)
