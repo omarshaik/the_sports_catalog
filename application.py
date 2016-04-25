@@ -298,18 +298,24 @@ def delete_item(category_id, item_id):
 		return render_template('delete_item.html', category_id=category_id, item_id=item_id, item=item_to_delete)
 
 # JSON endpoints
-@app.route('/catalog/JSON')
+@app.route('/catalog.json')
 def catalog_JSON():
 	categories = session.query(Category).all()
+	cat_with_items = []
+	for c in categories:
+		items = session.query(Item).filter_by(category_id=c.id).all()
+		c.items = items
+		cat_with_items.append(c)
+	categories = cat_with_items
 	return jsonify(categories=[c.serialize for c in categories])
 
-@app.route('/catalog/category/<int:category_id>/items/JSON')
+@app.route('/catalog/category/<int:category_id>/items.json')
 def items_JSON(category_id):
 	category = session.query(Category).filter_by(id=category_id).one()
 	items = session.query(Item).filter_by(category_id=category_id).all()
 	return jsonify(items=[i.serialize for i in items])
 
-@app.route('/catalog/category/<int:category_id>/items/<int:item_id>/JSON')
+@app.route('/catalog/category/<int:category_id>/items/<int:item_id>/item.json')
 def item_JSON(category_id, item_id):
 	item = session.query(Item).filter_by(id=item_id).one()
 	return jsonify(item=item.serialize)
