@@ -264,7 +264,7 @@ def edit_item(category_id, item_id):
 			edited_item.name = request.form['name']
 		if request.form['description']:
 			edited_item.description = request.form['description']
-		session.add(item)
+		session.add(edited_item)
 		session.commit()
 		return redirect(url_for('show_category', category_id=category_id))
 	else:
