@@ -1,0 +1,47 @@
+.header {
+	height: 75px;
+	background-color: #F8F7DA;
+}
+
+.title {
+	text-align: center;
+}
+h1 {
+	font-family: Verdana;
+}
+.home {
+	padding-left: 10px;
+	margin-top: 30px;
+}
+.login, .home, h1 {
+	display: inline;
+
+}
+.login {
+	float: right;
+	padding-right: 10px;
+	
+
+}
+
+.pane {
+	text-align: center;
+	font-family: Verdana;
+	background-color: #F8F7DA;
+
+}
+
+a:link {
+	text-decoration: none;
+}
+
+a:visited {
+	text-decoration: none;
+	color: purple;
+}
+a:active {
+	color: red;
+}
+a:hover {
+	color: red;
+}
