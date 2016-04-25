@@ -284,7 +284,7 @@ def delete_item(category_id, item_id):
 		session.commit()
 		return redirect(url_for('show_category', category_id=category_id))
 	else:
-		return render_template('delete_item.html', item=item_to_delete)
+		return render_template('delete_item.html', category_id=category_id, item_id=item_id, item=item_to_delete)
 
 # JSON endpoints
 @app.route('/catalog/JSON')

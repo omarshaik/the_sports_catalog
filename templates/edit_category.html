@@ -21,7 +21,7 @@
 <input type='submit' value='Edit'>
 
 
-<a href = '{{ url_for('show_catalog') }}'> Cancel </a>
+<a href = "{{ url_for('show_category', category_id = category.id) }}"> Cancel </a>
 
 </form>
 </body>
