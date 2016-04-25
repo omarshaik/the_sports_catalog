@@ -1,0 +1,22 @@
+{% include "header.html" %}
+<html>
+
+<head>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
+
+
+<body>
+<div class = 'pane'>
+<h1>{{category.name}}  Items</h1>
+
+{% for item in items %}
+
+<a href = "{{ url_for('show_item', category_id = category.id, item_id = item.id) }}"> <p>{{item.name}}</p></a>
+
+{% endfor %}
+
+</div>
+</body>
+
+</html>
