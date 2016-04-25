@@ -1,13 +1,16 @@
+{% include "header.html" %}
 <html>
 
 <head>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-	</head>
+</head>
 
 
 <body>
 <div class = 'pane'>
 <h1>Categories</h1>
+
+<a href="{{ url_for('new_category') }}" > <h3> Create a New Category </h3> </a>
 
 {% for category in categories %}
 
