@@ -197,7 +197,7 @@ def new_category():
 	if 'username' not in login_session:
 		return redirect('/login')
 	if request.method == 'POST':
-		new_category = Category(name=request.form['name'])
+		new_category = Category(name=request.form['name'], user_id=login_session['user_id'])
 		session.add(new_category)
 		session.commit()
 		return redirect(url_for('show_catalog'))
