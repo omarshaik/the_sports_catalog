@@ -1,0 +1,13 @@
+
+<div class="header">
+	<div>
+		<a href=" {{url_for('show_catalog')}} ">Home</a>
+	</div>
+	<div>
+		{% if 'username' not in session %}
+			<a href="{{url_for('show_login')}}">Log in</a>
+		{% else %}
+			<a href="{{url_for('gdisconnect')}}">Log out</a>
+		{% endif %}
+	</div>
+</div>
