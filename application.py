@@ -175,21 +175,32 @@ def gdisconnect():
 @app.route('/catalog/')
 def show_catalog():
 	categories = session.query(Category).all()
-	return render_template('catalog.html', categories=categories)
+	if 'username' not in login_session:
+		return render_template('public_catalog.html', categories=categories)
+	else:
+		return render_template('catalog.html', categories=categories)
 
 # Show a category's items
 @app.route('/catalog/category/<int:category_id>/')
 @app.route('/catalog/category/<int:category_id>/items/')
 def show_category(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
+    creator = get_user_info(category.user_id)
     items = session.query(Item).filter_by(category_id=category_id).all()
-    return render_template('category.html', items=items, category=category)
+    if 'username' not in login_session or creator.id != login_session['user_id']:
+    	return render_template('public_category.html', items=items, category=category)
+    else:
+    	return render_template('category.html', items=items, category=category)
 
 # Show a particular item
 @app.route('/catalog/category/<int:category_id>/items/<int:item_id>/')
 def show_item(category_id, item_id):
 	item = session.query(Item).filter_by(id=item_id).one()
-	return render_template('item.html', item=item)
+	creator = get_user_info(item.user_id)
+	if 'username' not in login_session or creator.id != login_session['user_id']:
+		return render_template('public_item.html', item=item, category_id=category_id)
+	else:
+		return render_template('item.html', item=item, category_id=category_id)
 
 # Create a new category
 @app.route('/catalog/category/new/', methods=['GET', 'POST'])
