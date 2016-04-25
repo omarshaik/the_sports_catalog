@@ -1,3 +1,4 @@
+{% include "header.html" %}
 <html>
 
 <head>
@@ -10,6 +11,9 @@
 
 <h1>{{item.name}}</h1>
 <p>{{item.description}}</p>
+
+<a href = "{{ url_for('edit_item', category_id = category_id, item_id = item.id )}}"> <h3> Edit </h3> </a>
+<a href = "{{ url_for('delete_item', category_id = category_id, item_id = item.id )}}"> <h3> Delete </h3> </a>
 
 </div>
 </body>
